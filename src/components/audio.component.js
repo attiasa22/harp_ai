@@ -1,3 +1,5 @@
+// wecode101
+
 import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
