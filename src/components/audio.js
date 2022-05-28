@@ -5,6 +5,10 @@ import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
+const fs = require('fs');
+const SpeechToTextV1 = require('./node-sdk/speech-to-text/v1');
+const { IamAuthenticator } = require('./node-sdk/auth/index.ts');
+
 export default class Audio extends Component {
   constructor(props) {
     super(props);
