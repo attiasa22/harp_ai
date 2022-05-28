@@ -1,4 +1,5 @@
 // wecode101
+// Watson is mine
 
 import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
@@ -93,7 +94,7 @@ export default class Audio extends Component {
 
     //display view of audio widget and control buttons
     return(
-      <div className="row d-flex justify-content-center mt-5">
+      <div className="mic-stuff">
         <button className="btn btn-light" onClick={this.start} disabled={this.state.isRecording}>Record</button>
         <button className="btn btn-danger" onClick={this.stop} disabled={!this.state.isRecording}>Stop</button>
         <button className="btn btn-warning" onClick={this.reset} disabled={!this.state.isRecordingStp}>Reset</button>

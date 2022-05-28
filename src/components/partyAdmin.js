@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Audio from './audio.component';
-import MicRecorder from 'mic-recorder-to-mp3';
-const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+import Audio from './audio';
+
+
 
 class PartyAdmin extends Component {
     constructor(props) {
@@ -22,3 +22,4 @@ class PartyAdmin extends Component {
 }
 
 export default PartyAdmin;
+

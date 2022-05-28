@@ -89,6 +89,11 @@
   font-size: 24px;
 }
 
+.mic-stuff {
+  display: flex;
+  flex-direction: column;
+}
+
 .home-link {
   text-decoration: none;
 }
