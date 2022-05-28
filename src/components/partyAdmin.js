@@ -34,3 +34,4 @@ class PartyAdmin extends Component {
 }
 
 export default PartyAdmin;
+
