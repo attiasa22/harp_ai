@@ -43,3 +43,22 @@ export const joinRoom = async () => {
 export const leaveRoom = async () => {
 
 };
+
+export const updateEmotion = async (partyId, emotion) => {
+    if (checkEmotionExist(partyId, emotion)){
+        database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(database.ServerValue.increment(1))
+    }
+    else{
+        database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(1)
+    }
+};
+
+export const checkEmotionExist = async (partyId, emotion) => {
+    database.ref("rooms").ref(partyId).orderByChild("emotion").equalTo(emotion).once("value", snapshot => {
+        if (snapshot.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+};
