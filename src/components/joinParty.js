@@ -11,8 +11,8 @@ const JoinParty = () => {
         <div className="home-page">
             <h1 id="main-title">Join a Party!</h1>
             <p>Enter Party Id</p>
-            <input type="text" value={partyId} onChange={handlePartyId} />
-            <button type="button">Join</button>
+            <input className="id-input" type="text" value={partyId} onChange={handlePartyId} />
+            <button type="button" className="join-btn">Join</button>
         </div>
     );
 };
