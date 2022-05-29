@@ -93,7 +93,6 @@
   text-decoration: none;
 }
 
-
 .emotion-button{
   background: transparent;
   background-repeat: no-repeat;
@@ -131,4 +130,20 @@
 }
 .emotion-button:hover, .emotion-button:focus {
   border: 5px solid rgba(128, 0, 128, 0.391);
+}
+.id-input {
+  width: 30%;
+  height: 25px;
+  min-width: 200px;
+  margin-bottom: 25px;
+}
+
+.join-btn {
+  background-color: purple;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  height: 40px;
+  width: 100px;
 }
