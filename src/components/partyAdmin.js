@@ -13,7 +13,7 @@ class PartyAdmin extends Component {
             <div className="home-page">
                 <script>        
                     function onButtonClick(emotion){
-                      print("Hello")
+                      console.log("Hello")
                       
                     }
                 </script>
@@ -26,7 +26,7 @@ class PartyAdmin extends Component {
                     <input type="submit" class="sad-button emotion-button" value="" />
                     <input type="submit" class="angry-button emotion-button" value="" />
                     <input type="submit" class="disgusted-button emotion-button" value="" />
-                    <input onclick="onButtonClick('confused');" type="submit" class="confused-button emotion-button" value="" />
+                    <input onclick="onButtonClick('confused')" type="submit" class="confused-button emotion-button" value="" />
                 </div>
             </div>
         );
