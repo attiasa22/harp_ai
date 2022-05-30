@@ -24,10 +24,11 @@ const database = firebase.database();
 export const getRoom = async (partyId, callback) => {
     database.ref('rooms').orderByChild("partyId").equalTo(partyId).on('value', (snapshot) => {
         const newRoomState = snapshot.val();
+        console.log(Object.values(newRoomState)[0]['members']);
         if (newRoomState === null) {
-          callback([]);
+          callback('');
         } else {
-          callback(newRoomState);
+          callback(Object.values(newRoomState)[0]['members']);
         }
       });
 }
