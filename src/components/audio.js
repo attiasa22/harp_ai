@@ -98,7 +98,7 @@ export default class Audio extends Component {
         this.setState({ isRecordingStp: true });
         console.log(buffer, blob, blobURL);
           const speechToText = new SpeechToTextV1({
-            authenticator: new IamAuthenticator({ apikey: speech_to_text_key }),
+            authenticator: new IamAuthenticator({ apikey: 'o0t2ek7SVUxj3V2gRYWlcWqbAWAOlfkBEBt6fobws45a' }),
             serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com'
           });
           const file = new File(buffer, './recording.mp3', {
@@ -109,6 +109,7 @@ export default class Audio extends Component {
             // From file
             audio: new Audio('./recording.mp3'),
             contentType: 'audio/mp3;'
+            
           };
           console.log("test");
           speechToText.recognize(params)
@@ -122,10 +123,9 @@ export default class Audio extends Component {
 
 
             const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-            const { IamAuthenticator } = require('ibm-watson/auth');
             
             const nlu = new NaturalLanguageUnderstandingV1({
-              authenticator: new IamAuthenticator({ apikey: nlu_key }),
+              authenticator: new IamAuthenticator({ apikey: 'duALIFSm76eWlghDLNXsGWYifaJQGxMRnf' }),
               version: '2018-04-05',
               serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com'
             });
