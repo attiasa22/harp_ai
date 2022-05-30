@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import * as backend from '../services/datastore';
 
-class PartyAdmin extends Component {
-    constructor(props) {
-      super(props);
-  
-      this.state = {
-          partyId: null,
-      };
-    }
+const PartyAdmin = (props) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [party, setParty] = useState({});
 
-    componentDidMount() {
-        const genPartyId = (max, min) => {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+    useEffect(() => {
+        const fetchRoom = async () => {
+          backend.getRoom(id, setParty);
         };
+    
+        fetchRoom();
+      }, []);
 
-        this.setState(() => ({ partyId: genPartyId(100000, 1000000)}));
+    const closeParty = (id) => {
+        backend.deleteRoom(id, navigate);
     }
 
-    render() {
-        return (
-            <div className="home-page">
-                <h1 id="main-title">Your Party: {this.state.partyId}</h1>
-                <h2>Participants:</h2>
-                <button type="button">Record</button>
-            </div>
-        );
-    }
+    return (
+        <div className="home-page">
+            <h1 id="main-title">Your Party: {id}</h1>
+            <h2>Participants: {Object.values(party)[0]['members']}</h2>
+            <button type="button">Record</button>
+            <button type="button" onClick={() => closeParty(id)}>End Party</button>
+        </div>
+    );
 }
 
 export default PartyAdmin;

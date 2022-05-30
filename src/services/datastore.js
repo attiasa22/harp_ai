@@ -1,7 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,28 +17,38 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
 
-export const checkExist = async (partyId) => {
-    database.ref("rooms").orderByChild("partyId").equalTo(partyId).once("value", snapshot => {
-        if (snapshot.exists()) {
-            return true;
+export const getRoom = async (partyId, callback) => {
+    database.ref('rooms').orderByChild("partyId").equalTo(partyId).on('value', (snapshot) => {
+        const newRoomState = snapshot.val();
+        if (newRoomState === null) {
+          callback([]);
         } else {
-            return false;
+          callback(newRoomState);
         }
-    });
-};
+      });
+}
 
-export const createRoom = async (partyId) => {
-    database.ref("rooms").push(partyId, 1);
+export const createRoom = async (room) => {
+    database.ref("rooms").push(room);
 };
 
 export const joinRoom = async () => {
 
 };
 
-export const leaveRoom = async () => {
+export const deleteRoom = async (partyId, navigate) => {
+    database.ref("rooms").orderByChild("partyId").equalTo(partyId).once("value", snapshot => {
+        const updates = {};
+        snapshot.forEach(child => updates[child.key] = null);
+        database.ref("rooms").update(updates);
+    });
+    navigate("/");
+};
 
+export const leaveRoom = async () => {
+    
 };
