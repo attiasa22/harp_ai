@@ -92,3 +92,20 @@
 .home-link {
   text-decoration: none;
 }
+
+.id-input {
+  width: 30%;
+  height: 25px;
+  min-width: 200px;
+  margin-bottom: 25px;
+}
+
+.join-btn {
+  background-color: purple;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  height: 40px;
+  width: 100px;
+}
