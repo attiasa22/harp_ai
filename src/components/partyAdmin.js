@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Audio from './audio';
 //mport { updateEmotion } from '../services/datastore';
 
 class PartyAdmin extends Component {
@@ -25,6 +26,7 @@ class PartyAdmin extends Component {
                 <h1 id="main-title">Your Party: {this.state.partyId}</h1>
                 <h2>Participants:</h2>
                 <button type="button">Record</button>
+                <Audio/>
                 <h2>Does this song make you feel too:</h2>
                 <div className='.button-align'>               
                     <input  type="submit" class=" emotion-button joy-button" value="" />
