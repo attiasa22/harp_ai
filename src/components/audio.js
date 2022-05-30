@@ -96,10 +96,25 @@ export default class Audio extends Component {
         const blobURL = URL.createObjectURL(blob)
         this.setState({ blobURL, isRecording: false });
         this.setState({ isRecordingStp: true });
+
         console.log(buffer, blob, blobURL);
+        const tunnel = require('tunnel');
+        const httpsAgent = tunnel.httpsOverHttp({
+          proxy: {
+            host: 'http://localhost:3000/',
+            port: 3000,
+          },
+        });
           const speechToText = new SpeechToTextV1({
-            authenticator: new IamAuthenticator({ apikey: 'o0t2ek7SVUxj3V2gRYWlcWqbAWAOlfkBEBt6fobws45a' }),
-            serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com'
+            authenticator: new IamAuthenticator({ apikey: 'o0t2ek7SVUxj3V2gRYWlcWqbAWAOlfkBEBt6fobws45a' }),  
+            serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com',
+           // disableSslVerification: true,
+           
+            httpsAgent, // not necessary if using Basic or BearerToken authentication
+             proxy: false,
+             headers: {
+              'Access-Control-Allow-Origin': 'http://localhost:3000'
+          },
           });
           const file = new File(buffer, './recording.mp3', {
             type: blob.type,
@@ -127,7 +142,9 @@ export default class Audio extends Component {
             const nlu = new NaturalLanguageUnderstandingV1({
               authenticator: new IamAuthenticator({ apikey: 'duALIFSm76eWlghDLNXsGWYifaJQGxMRnf' }),
               version: '2018-04-05',
-              serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com'
+              serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com',
+              httpsAgent, // not necessary if using Basic or BearerToken authentication
+              proxy: false,
             });
             
             nlu.analyze(
