@@ -19,6 +19,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+//export const auth = getAuth(app);
 
 const database = firebase.database();
 
@@ -44,13 +45,25 @@ export const leaveRoom = async () => {
 
 };
 
-export const updateEmotion = async (partyId, emotion) => {
+export function updateEmotion(partyId, emotion) {
     if (checkEmotionExist(partyId, emotion)){
         database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(database.ServerValue.increment(1))
     }
     else{
         database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(1)
     }
+};
+
+export function getEmotion(partyId,callback) {
+        // do something here
+        database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
+          const newEmotionState = snapshot.val();
+          if (newEmotionState === null) {
+            callback([]);
+          } else {
+            callback(newEmotionState);
+          }
+        })
 };
 
 export const checkEmotionExist = async (partyId, emotion) => {
