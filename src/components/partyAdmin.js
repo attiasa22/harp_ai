@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+//import datastore.js
+//import '././services/datastore';
+import { updateEmotion } from '../services/datastore';
 class PartyAdmin extends Component {
     constructor(props) {
       super(props);
@@ -15,6 +17,7 @@ class PartyAdmin extends Component {
         };
 
         this.setState(() => ({ partyId: genPartyId(100000, 1000000)}));
+
     }
 
     render() {
@@ -29,7 +32,7 @@ class PartyAdmin extends Component {
                     <input type="submit" class="sad-button emotion-button" value="" />
                     <input type="submit" class="angry-button emotion-button" value="" />
                     <input type="submit" class="disgusted-button emotion-button" value="" />
-                    <input onclick="onButtonClick('confused')" type="submit" class="confused-button emotion-button" value="" />
+                    <input onclick={() => updateEmotion(this.state.partyId,"confused")} type="submit" class="confused-button emotion-button" value="" />
                 </div>
             </div>
         );
