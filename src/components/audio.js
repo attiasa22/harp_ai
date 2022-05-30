@@ -1,8 +1,13 @@
 
+
 import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
-const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+import speech_to_text_key from '../config.js';
+import nlu_key from '../config.js';
 
+import * as fs from 'fs';
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+//var recognizeMic = require('watson-speech/speech-to-text/recognize-microphone');
 export default class Audio extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +21,8 @@ export default class Audio extends Component {
         blobURL: '',
         isBlocked: false,
         isRecordingStp: false,
+        text: '',
+        sentiment:'',
       }
 
     //binds the methods to the component
@@ -25,9 +32,10 @@ export default class Audio extends Component {
    }
 
   componentDidMount(){
-    const fs = require('fs');
-    const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
-    const { IamAuthenticator } = require('ibm-watson/auth');
+    //const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
+    //const { IamAuthenticator } = require('ibm-watson/auth');
+
+
     //Prompt the user for permission to allow audio device in browser
     navigator.getUserMedia = (
       navigator.getUserMedia ||
@@ -47,9 +55,11 @@ export default class Audio extends Component {
         this.setState({ isBlocked: true })
       },
     );
+
   }
  
   start(){
+  
     /*
      * If the user denys permission to use the audio device
      * in the browser no recording can be done and an alert is shown
@@ -62,7 +72,10 @@ export default class Audio extends Component {
         .start()
         .then(() => {
           this.setState({ isRecording: true });
+
+    
         }).catch((e) => console.error(e));
+
     }
   }
 
@@ -72,6 +85,10 @@ export default class Audio extends Component {
      * Click stop once recording as finished
      * An MP3 is generated for the user to download the audio
      */
+     const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
+     const { IamAuthenticator } = require('ibm-watson/auth');
+     
+
     Mp3Recorder
       .stop()
       .getMp3()
@@ -79,7 +96,61 @@ export default class Audio extends Component {
         const blobURL = URL.createObjectURL(blob)
         this.setState({ blobURL, isRecording: false });
         this.setState({ isRecordingStp: true });
+        console.log(buffer, blob, blobURL);
+          const speechToText = new SpeechToTextV1({
+            authenticator: new IamAuthenticator({ apikey: speech_to_text_key }),
+            serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com'
+          });
+          const file = new File(buffer, './recording.mp3', {
+            type: blob.type,
+            lastModified: Date.now()
+          });
+          const params = {
+            // From file
+            audio: new Audio('./recording.mp3'),
+            contentType: 'audio/mp3;'
+          };
+          console.log("test");
+          speechToText.recognize(params)
+            .then(response => {
+              console.log(JSON.stringify(response.result, null, 2));
+              this.setState({ text: JSON.stringify(response.result, null, 2) });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+
+
+            const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
+            const { IamAuthenticator } = require('ibm-watson/auth');
+            
+            const nlu = new NaturalLanguageUnderstandingV1({
+              authenticator: new IamAuthenticator({ apikey: nlu_key }),
+              version: '2018-04-05',
+              serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com'
+            });
+            
+            nlu.analyze(
+              {
+                text: this.state.text, // Buffer or String
+                features: {
+                    emotion: {},
+                }
+              })
+              .then(response => {
+                console.log(JSON.stringify(response.result, null, 2));
+                this.setState({ sentiment: JSON.stringify(response.result, null, 2) });
+
+              })
+              .catch(err => {
+                console.log('error: ', err);
+              });
+
+    
       }).catch((e) => console.log(e));
+
+      
+      
   };
 
   reset() {
