@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { updateEmotion } from '../services/datastore';
+//mport { updateEmotion } from '../services/datastore';
 
 class PartyAdmin extends Component {
     constructor(props) {
@@ -27,12 +27,15 @@ class PartyAdmin extends Component {
                 <button type="button">Record</button>
                 <h2>Does this song make you feel too:</h2>
                 <div className='.button-align'>               
-                    <input onclick={() => updateEmotion(this.state.partyId,"joy")} type="submit" class=" emotion-button joy-button" value="" />
-                    <input onclick={() => updateEmotion(this.state.partyId,"sad")} type="submit" class="sad-button emotion-button" value="" />
-                    <input onclick={() => updateEmotion(this.state.partyId,"angry")} type="submit" class="angry-button emotion-button" value="" />
-                    <input onclick={() => updateEmotion(this.state.partyId,"disgusted")} type="submit" class="disgusted-button emotion-button" value="" />
-                    <input onclick={() => updateEmotion(this.state.partyId,"confused")} type="submit" class="confused-button emotion-button" value="" />
+                    <input  type="submit" class=" emotion-button joy-button" value="" />
+                    <input  type="submit" class="sad-button emotion-button" value="" />
+                    <input  type="submit" class="angry-button emotion-button" value="" />
+                    <input type="submit" class="disgusted-button emotion-button" value="" />
+                    <input  type="submit" class="confused-button emotion-button" value="" />
                 </div>
+
+
+
             </div>
         );
     }
