@@ -24,12 +24,10 @@ const database = firebase.database();
 export const getRoom = async (partyId, callback) => {
     database.ref('rooms/'+partyId).on('value', (snapshot) => {
         const newRoomState = snapshot.val();
-       // console.log(newRoomState)
-        //console.log(Object.values(newRoomState)['members']);
         if (newRoomState === null) {
           callback('');
         } else {
-          callback(Object.values(newRoomState)['members']);//[0]
+          callback(Object.values(newRoomState)[0]);//[0]
         }
       });
 }
@@ -39,8 +37,18 @@ export const createRoom = async (room) => {
     
 };
 
-export const joinRoom = async () => {
-
+export const joinRoom = async (id) => {
+    var ref = database.ref('rooms').child(id).child("members");
+    ref.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            console.log("here");
+            const userData = snapshot.val();
+            console.log("exists!", userData);
+      
+            database.ref('rooms').child(id).update({["members"]:parseInt(userData)+1});
+        }
+        console.log(snapshot)
+    });  
 };
 
 export const deleteRoom = async (partyId, navigate) => {
@@ -63,38 +71,6 @@ export function getnormalisedEmotion(partyId) {
 
       var ref = database.ref('/rooms/'+partyId+"/emotion");
 
-};
-
-export function updateEmotion(partyId, emotion) {
-    if (checkEmotionExist(partyId, emotion)){
-        database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(database.ServerValue.increment(1))
-    }
-    else{
-        database.ref("rooms").ref(partyId).child("emotion").child(emotion).set(1)
-    }
-};
-
-export function getEmotion(partyId,callback) {
-        // do something here
-        database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
-          const newEmotionState = snapshot.val();
-          if (newEmotionState === null) {
-            callback([]);
-          } else {
-            callback(newEmotionState);
-          }
-        })
-};
-
-export const checkEmotionExist = async (partyId, emotion) => {
-    database.ref("rooms").ref(partyId).orderByChild("emotion").equalTo(emotion).once("value", snapshot => {
-        if (snapshot.exists()) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-};
       ref.once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
           const childKey = childSnapshot.key;

@@ -13,7 +13,7 @@ const JoinParty = () => {
             <h1 id="main-title">Join a Party!</h1>
             <p>Enter Party Id</p>
             <input className="id-input" type="text" value={id} onChange={handlePartyId} />
-            <NavLink to={`/partyMember/:${id}`} className="join-btn">Join</NavLink>
+            <NavLink to={`/partyMember/${id}`} className="join-btn">Join</NavLink>
         </div>
     );
 };
