@@ -109,12 +109,12 @@ export default class Audio extends Component {
             authenticator: new IamAuthenticator({ apikey: 'o0t2ek7SVUxj3V2gRYWlcWqbAWAOlfkBEBt6fobws45a' }),  
             serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com',
            // disableSslVerification: true,
-           
+  
             httpsAgent, // not necessary if using Basic or BearerToken authentication
              proxy: false,
              headers: {
               'Access-Control-Allow-Origin': 'http://localhost:3000'
-          },
+             },
           });
           const file = new File(buffer, './recording.mp3', {
             type: blob.type,
@@ -145,6 +145,9 @@ export default class Audio extends Component {
               serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com',
               httpsAgent, // not necessary if using Basic or BearerToken authentication
               proxy: false,
+              headers: {
+                'Access-Control-Allow-Origin': 'http://localhost:3000'
+              },
             });
             
             nlu.analyze(
