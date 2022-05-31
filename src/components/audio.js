@@ -9,6 +9,7 @@ import nlu_key from '../config.js';
 
 import * as fs from 'fs';
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+
 //var recognizeMic = require('watson-speech/speech-to-text/recognize-microphone');
 export default class Audio extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class Audio extends Component {
         isRecordingStp: false,
         text: '',
         sentiment:'',
+        setRecordingEmotions: props.setRecordingEmotions,
       }
 
     //binds the methods to the component
@@ -101,7 +103,8 @@ export default class Audio extends Component {
         let formData = new FormData();
         formData.append("audio", file);
         const response = await axios.post(`http://localhost:1880/test`, formData);
-        console.log(response);
+        console.log(response.data.emotion.document.emotion);
+        this.state.setRecordingEmotions(response.data.emotion.document.emotion);
       }).catch((e) => console.log(e));
   };
 

@@ -7,6 +7,7 @@ const PartyAdmin = (props) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [members, setMembers] = useState('');
+    const [recordingEmotions, setRecordingEmotions] = useState({});
 
     useEffect(() => {
         const fetchRoom = async () => {
@@ -22,12 +23,29 @@ const PartyAdmin = (props) => {
     const updateEmotion = (id, emotion) => {
         backend.updateEmotion(id, emotion);
     }
-    console.log(members);
+
+    const createPlaylist = async () => {
+        const userEmotions = await backend.getnormalisedEmotion(id);
+
+        console.log(recordingEmotions);
+        console.log(userEmotions);
+
+        for (const [key, value] of Object.entries(recordingEmotions)) {
+            if (userEmotions.includes(value)) {
+                recordingEmotions[key] += userEmotions[value];
+            }
+        }
+
+        const highest = Math.max(recordingEmotions);
+        console.log(highest);
+    }
+
     return (
         <div className="home-page">
             <h1 id="main-title">Your Party: {id}</h1>
             <h2>Participants: {members}</h2>
-            <Audio/>
+            <Audio setRecordingEmotions={setRecordingEmotions}/>
+            <button type="button" onClick={() => createPlaylist()}>Create Playlist</button>
             <button type="button" onClick={() => closeParty(id)}>End Party</button>
             <div className='.button-align'>               
                     <input onClick={() => updateEmotion(id, "joy")} type="submit" className=" emotion-button joy-button" value="" />
