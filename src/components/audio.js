@@ -4,8 +4,9 @@ import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
 import speech_to_text_key from '../config.js';
 import nlu_key from '../config.js';
-
 import * as fs from 'fs';
+
+
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 //var recognizeMic = require('watson-speech/speech-to-text/recognize-microphone');
 export default class Audio extends Component {
@@ -21,8 +22,10 @@ export default class Audio extends Component {
         blobURL: '',
         isBlocked: false,
         isRecordingStp: false,
+        buffer: null,
         text: '',
         sentiment:'',
+        blob: null,
       }
 
     //binds the methods to the component
@@ -32,6 +35,7 @@ export default class Audio extends Component {
    }
 
   componentDidMount(){
+    
     //const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
     //const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -96,6 +100,8 @@ export default class Audio extends Component {
         const blobURL = URL.createObjectURL(blob)
         this.setState({ blobURL, isRecording: false });
         this.setState({ isRecordingStp: true });
+        this.setState({ buffer: buffer });
+        this.setState({ blob: blob });
 
         console.log(buffer, blob, blobURL);
         const tunnel = require('tunnel');
@@ -116,14 +122,13 @@ export default class Audio extends Component {
               'Access-Control-Allow-Origin': 'http://localhost:3000'
              },
           });
-          const file = new File(buffer, './recording.mp3', {
-            type: blob.type,
-            lastModified: Date.now()
-          });
+          const file = new File([blob], './recording.mp3', { type: 'audio/mp3' });
+          const Mp32Wav = require('mp3-to-wav');
+          const wavFile =  new Mp32Wav('./recording.mp3');
           const params = {
             // From file
-            audio: new Audio('./recording.mp3'),
-            contentType: 'audio/mp3;'
+            audio: wavFile,
+            contentType: 'audio/l16; rate=44100'
             
           };
           console.log("test");
