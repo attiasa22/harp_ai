@@ -25,6 +25,13 @@ const PartyAdmin = (props) => {
             <h2>Participants: {members}</h2>
             <button type="button">Record</button>
             <button type="button" onClick={() => closeParty(id)}>End Party</button>
+            <div className='.button-align'>               
+                    <input  type="submit" class=" emotion-button joy-button" value="" />
+                    <input  type="submit" class="sad-button emotion-button" value="" />
+                    <input  type="submit" class="angry-button emotion-button" value="" />
+                    <input type="submit" class="disgusted-button emotion-button" value="" />
+                    <input  type="submit" class="confused-button emotion-button" value="" />
+            </div>
         </div>
     );
 }
