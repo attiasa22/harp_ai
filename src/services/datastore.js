@@ -24,12 +24,10 @@ const database = firebase.database();
 export const getRoom = async (partyId, callback) => {
     database.ref('rooms/'+partyId).on('value', (snapshot) => {
         const newRoomState = snapshot.val();
-       // console.log(newRoomState)
-        //console.log(Object.values(newRoomState)['members']);
         if (newRoomState === null) {
           callback('');
         } else {
-          callback(Object.values(newRoomState)['members']);//[0]
+          callback(Object.values(newRoomState)[0]);//[0]
         }
       });
 }
@@ -39,8 +37,18 @@ export const createRoom = async (room) => {
     
 };
 
-export const joinRoom = async () => {
-
+export const joinRoom = async (id) => {
+    var ref = database.ref('rooms').child(id).child("members");
+    ref.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            console.log("here");
+            const userData = snapshot.val();
+            console.log("exists!", userData);
+      
+            database.ref('rooms').child(id).update({["members"]:parseInt(userData)+1});
+        }
+        console.log(snapshot)
+    });  
 };
 
 export const deleteRoom = async (partyId, navigate) => {

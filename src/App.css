@@ -93,6 +93,44 @@
   text-decoration: none;
 }
 
+.emotion-button{
+  background: transparent;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: contain;
+ object-fit: contain;
+  height: 80px;
+  width: 80px;
+  border: none;
+}
+
+.sad-button{
+  background-image: url(images/sad.png);
+}
+.angry-button{
+  background-image: url(images/angry.png);
+}
+.confused-button{
+  background-image: url(images/confused.png);
+}
+.disgusted-button{
+  background-image: url(images/disgusted.png);
+}
+.joy-button{
+  background-image: url(images/happy.png);
+} 
+
+.button-align{
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  margin: 0 10px;
+}
+.emotion-button:hover, .emotion-button:focus {
+  border: 5px solid rgba(128, 0, 128, 0.391);
+}
 .id-input {
   width: 30%;
   height: 25px;
