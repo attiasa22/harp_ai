@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//mport { updateEmotion } from '../services/datastore';
+import { updateEmotion } from '../services/datastore';
 
 class PartyAdmin extends Component {
     constructor(props) {
