@@ -53,3 +53,34 @@ export const deleteRoom = async (partyId, navigate) => {
 export const leaveRoom = async () => {
     
 };
+
+export function updateEmotion(partyId, emotion) {
+  if (checkEmotionExist(partyId, emotion)){
+      //database.ref("rooms").child(partyId).child("emotion").child(emotion)
+  }
+  else{
+      database.ref("rooms").ref(partyId).push(emotion)
+  }
+};
+
+export function getEmotion(partyId,callback) {
+      // do something here
+      database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
+        const newEmotionState = snapshot.val();
+        if (newEmotionState === null) {
+          callback([]);
+        } else {
+          callback(newEmotionState);
+        }
+      })
+};
+
+export const checkEmotionExist = async (partyId, emotion) => {
+  database.ref("rooms").child(partyId).orderByChild("emotion").equalTo(emotion).once("value", snapshot => {
+      if (snapshot.exists()) {
+          return true;
+      } else {
+          return false;
+      }
+  });
+};

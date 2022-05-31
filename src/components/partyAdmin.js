@@ -18,6 +18,9 @@ const PartyAdmin = (props) => {
     const closeParty = (id) => {
         backend.deleteRoom(id, navigate);
     }
+    const updateEmotion = (id, emotion) => {
+        backend.updateEmotion(id, emotion);
+    }
     console.log(members);
     return (
         <div className="home-page">
@@ -26,7 +29,7 @@ const PartyAdmin = (props) => {
             <button type="button">Record</button>
             <button type="button" onClick={() => closeParty(id)}>End Party</button>
             <div className='.button-align'>               
-                    <input  type="submit" class=" emotion-button joy-button" value="" />
+                    <input onClick={updateEmotion(id, "joy")} type="submit" class=" emotion-button joy-button" value="" />
                     <input  type="submit" class="sad-button emotion-button" value="" />
                     <input  type="submit" class="angry-button emotion-button" value="" />
                     <input type="submit" class="disgusted-button emotion-button" value="" />
