@@ -35,6 +35,7 @@ export const getRoom = async (partyId, callback) => {
 
 export const createRoom = async (room) => {
     database.ref("rooms").push(room);
+    
 };
 
 export const joinRoom = async () => {
@@ -55,11 +56,14 @@ export const leaveRoom = async () => {
 };
 
 export function updateEmotion(partyId, emotion) {
+  
   if (checkEmotionExist(partyId, emotion)){
       //database.ref("rooms").child(partyId).child("emotion").child(emotion)
   }
   else{
-      database.ref("rooms").ref(partyId).push(emotion)
+     
+      console.log(database.ref("rooms").child(partyId));
+      database.ref("rooms").child(partyId).push({"emotion": {emotion: 1}});
   }
 };
 
@@ -76,11 +80,23 @@ export function getEmotion(partyId,callback) {
 };
 
 export const checkEmotionExist = async (partyId, emotion) => {
-  database.ref("rooms").child(partyId).orderByChild("emotion").equalTo(emotion).once("value", snapshot => {
-      if (snapshot.exists()) {
-          return true;
-      } else {
-          return false;
+
+  var ref = database.ref('rooms/'+partyId +"/emotion");
+  ref.once('value', (snapshot) => {
+      if (snapshot.child(emotion).exists()) {
+        const userData = snapshot.val();
+        console.log("exists!", userData);
+
+       //var emotionCount =ref.child(emotion).getValue();
+
+       // ref.child(emotion).set(ref.child(emotion)+1);
+        
+
+      }
+      else{
+        console.log("doesn't exist!");
+        console.log(partyId+"/emotion/"+emotion);
+        database.ref('rooms/'+partyId+"/emotion/"+emotion).set(1);
       }
   });
 };

@@ -121,6 +121,10 @@
   border: none;
 }
 
+.emotion-button:hover, .emotion-button:focus {
+  border: 5px solid rgba(128, 0, 128, 0.391);
+}
+
 .sad-button{
   background-image: url(images/sad.png);
 }
