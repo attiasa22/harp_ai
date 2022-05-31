@@ -122,7 +122,6 @@ export default class Audio extends Component {
 
 
             const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-            const { IamAuthenticator } = require('ibm-watson/auth');
             
             const nlu = new NaturalLanguageUnderstandingV1({
               authenticator: new IamAuthenticator({ apikey: nlu_key }),
