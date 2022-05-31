@@ -22,19 +22,20 @@ const app = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 export const getRoom = async (partyId, callback) => {
-    database.ref('rooms').orderByChild("partyId").equalTo(partyId).on('value', (snapshot) => {
+    database.ref('rooms/'+partyId).on('value', (snapshot) => {
         const newRoomState = snapshot.val();
-        console.log(Object.values(newRoomState)[0]['members']);
+       // console.log(newRoomState)
+        //console.log(Object.values(newRoomState)['members']);
         if (newRoomState === null) {
           callback('');
         } else {
-          callback(Object.values(newRoomState)[0]['members']);
+          callback(Object.values(newRoomState)['members']);//[0]
         }
       });
 }
 
 export const createRoom = async (room) => {
-    database.ref("rooms").push(room);
+    database.ref("rooms").set(room);
     
 };
 
@@ -57,35 +58,59 @@ export const leaveRoom = async () => {
     
 };
 
-export function getnormalisedEmotion(partyId,callback) {
-      // do something here
-      database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
-        const newEmotionState = snapshot.val();
-        if (newEmotionState === null) {
-          callback([]);
-        } else {
-          callback(newEmotionState);
-        }
-      })
+export function getnormalisedEmotion(partyId) {
+      var emotionsList = [];
+
+      var ref = database.ref('/rooms/'+partyId+"/emotion");
+
+      ref.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          const childKey = childSnapshot.key;
+          var childData = 1.0*childSnapshot.val();
+          emotionsList[childKey] = childData
+        });
+      });
+  //1.0*emotionsList[i])/(1.0*magnitude);
+      const magnitude = sum(emotionsList);
+
+      for (const [key, value] of Object.entries(emotionsList)) {
+        emotionsList[key]= value/ magnitude
+      };
+      console.log(emotionsList);
+      return emotionsList;
 };
+
+function sum( obj ) {
+  var sum = 0.0;
+  for( var el in obj ) {
+    if( obj.hasOwnProperty( el ) ) {
+      sum += parseFloat( obj[el] );
+    }
+  }
+  return sum;
+}
+
+
 
 export const updateEmotion = async (partyId, emotion) => {
 
   var ref = database.ref('rooms/'+partyId +"/emotion/"+emotion);
-  console.log(ref)
+//  console.log(ref)
   ref.once('value', (snapshot) => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
-        console.log("exists!", userData);
+       // console.log("exists!", userData);
       
         database.ref('rooms/'+partyId+"/emotion/").update({[emotion]:parseInt(userData)+1});
 
     
       }
       else{
-        console.log("doesn't exist!");
-        console.log(partyId+"/emotion/"+emotion);
+       // console.log("doesn't exist!");
+       // console.log(partyId+"/emotion/"+emotion);
         database.ref('rooms/'+partyId+"/emotion/"+emotion).set(1);
       }
   });
+
+  getnormalisedEmotion(partyId)
 };

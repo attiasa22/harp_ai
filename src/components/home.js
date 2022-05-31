@@ -13,8 +13,7 @@ const Home = () => {
         };
         partyId = genPartyId(100000, 1000000);
         const room = {
-            partyId: partyId.toString(),
-            members: 1
+         [partyId.toString()]: {members: 1}
         };
         
         backend.createRoom(room);
