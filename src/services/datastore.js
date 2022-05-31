@@ -24,10 +24,12 @@ const database = firebase.database();
 export const getRoom = async (partyId, callback) => {
     database.ref('rooms/'+partyId).on('value', (snapshot) => {
         const newRoomState = snapshot.val();
+       // console.log(newRoomState)
+        //console.log(Object.values(newRoomState)['members']);
         if (newRoomState === null) {
           callback('');
         } else {
-          callback(Object.values(newRoomState)[0]);//[0]
+          callback(Object.values(newRoomState)['members']);//[0]
         }
       });
 }
@@ -37,18 +39,8 @@ export const createRoom = async (room) => {
     
 };
 
-export const joinRoom = async (id) => {
-    var ref = database.ref('rooms').child(id).child("members");
-    ref.once('value', (snapshot) => {
-        if (snapshot.exists()) {
-            console.log("here");
-            const userData = snapshot.val();
-            console.log("exists!", userData);
-      
-            database.ref('rooms').child(id).update({["members"]:parseInt(userData)+1});
-        }
-        console.log(snapshot)
-    });  
+export const joinRoom = async () => {
+
 };
 
 export const deleteRoom = async (partyId, navigate) => {
@@ -68,7 +60,6 @@ export const leaveRoom = async () => {
 
 export function getnormalisedEmotion(partyId) {
       var emotionsList = [];
-
       var ref = database.ref('/rooms/'+partyId+"/emotion");
 
       ref.once('value', function(snapshot) {
@@ -78,11 +69,15 @@ export function getnormalisedEmotion(partyId) {
           emotionsList[childKey] = childData
         });
       });
-  //1.0*emotionsList[i])/(1.0*magnitude);
       const magnitude = sum(emotionsList);
 
       for (const [key, value] of Object.entries(emotionsList)) {
+        if (magnitude == 0) {
+          emotionsList[key] = 0;
+        }
+        else {
         emotionsList[key]= value/ magnitude
+        }
       };
       console.log(emotionsList);
       return emotionsList;
@@ -96,7 +91,7 @@ function sum( obj ) {
     }
   }
   return sum;
-}
+};
 
 
 
@@ -119,6 +114,17 @@ export const updateEmotion = async (partyId, emotion) => {
         database.ref('rooms/'+partyId+"/emotion/"+emotion).set(1);
       }
   });
+  getnormalisedEmotion(partyId)
+};
 
+
+export function setEmotionstoZero(partyId) {
+  var ref = database.ref('/rooms/'+partyId+"/emotion");
+
+  ref.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      ref.update({[childSnapshot.key]:0.0});
+    });
+  });
   getnormalisedEmotion(partyId)
 };
