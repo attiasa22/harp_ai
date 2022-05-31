@@ -9,6 +9,5 @@
 
 ### To run project:
 in terminal run: 
-cd harp-ai
 npm install
 npm start  
