@@ -9,6 +9,7 @@ import './App.css';
 import Home from './components/home';
 import JoinParty from './components/joinParty';
 import PartyAdmin from './components/partyAdmin';
+import PartyMember from './components/partyMember';
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class App extends Component {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/joinParty" element={<JoinParty />} />
-            <Route path="/partyAdmin" element={<PartyAdmin />} />
+            <Route path="/partyAdmin/:id" element={<PartyAdmin />} />
+            <Route path="/partyMember/:id" element={<PartyMember />} />
             <Route path="*" element={<div>post not found </div>} />
           </Routes>
         </div>
