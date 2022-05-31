@@ -49,13 +49,15 @@ export const deleteRoom = async (partyId, navigate) => {
         database.ref("rooms").update(updates);
     });
     navigate("/");
+
+    database.ref("rooms").child(partyId).remove();
 };
 
 export const leaveRoom = async () => {
     
 };
 
-export function getEmotion(partyId,callback) {
+export function getnormalisedEmotion(partyId,callback) {
       // do something here
       database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
         const newEmotionState = snapshot.val();
