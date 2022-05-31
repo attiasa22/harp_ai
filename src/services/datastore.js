@@ -55,18 +55,6 @@ export const leaveRoom = async () => {
     
 };
 
-export function updateEmotion(partyId, emotion) {
-  
-  if (checkEmotionExist(partyId, emotion)){
-      //database.ref("rooms").child(partyId).child("emotion").child(emotion)
-  }
-  else{
-     
-      console.log(database.ref("rooms").child(partyId));
-      database.ref("rooms").child(partyId).push({"emotion": {emotion: 1}});
-  }
-};
-
 export function getEmotion(partyId,callback) {
       // do something here
       database.ref("rooms").ref(partyId).on('emotion', (snapshot) => {
@@ -79,19 +67,18 @@ export function getEmotion(partyId,callback) {
       })
 };
 
-export const checkEmotionExist = async (partyId, emotion) => {
+export const updateEmotion = async (partyId, emotion) => {
 
-  var ref = database.ref('rooms/'+partyId +"/emotion");
+  var ref = database.ref('rooms/'+partyId +"/emotion/"+emotion);
+  console.log(ref)
   ref.once('value', (snapshot) => {
-      if (snapshot.child(emotion).exists()) {
+      if (snapshot.exists()) {
         const userData = snapshot.val();
         console.log("exists!", userData);
+      
+        database.ref('rooms/'+partyId+"/emotion/").update({[emotion]:parseInt(userData)+1});
 
-       //var emotionCount =ref.child(emotion).getValue();
-
-       // ref.child(emotion).set(ref.child(emotion)+1);
-        
-
+    
       }
       else{
         console.log("doesn't exist!");
