@@ -60,7 +60,6 @@ export const leaveRoom = async () => {
 
 export function getnormalisedEmotion(partyId) {
       var emotionsList = [];
-
       var ref = database.ref('/rooms/'+partyId+"/emotion");
 
       ref.once('value', function(snapshot) {
@@ -70,11 +69,15 @@ export function getnormalisedEmotion(partyId) {
           emotionsList[childKey] = childData
         });
       });
-  //1.0*emotionsList[i])/(1.0*magnitude);
       const magnitude = sum(emotionsList);
 
       for (const [key, value] of Object.entries(emotionsList)) {
+        if (magnitude == 0) {
+          emotionsList[key] = 0;
+        }
+        else {
         emotionsList[key]= value/ magnitude
+        }
       };
       console.log(emotionsList);
       return emotionsList;
@@ -88,7 +91,7 @@ function sum( obj ) {
     }
   }
   return sum;
-}
+};
 
 
 
@@ -111,6 +114,17 @@ export const updateEmotion = async (partyId, emotion) => {
         database.ref('rooms/'+partyId+"/emotion/"+emotion).set(1);
       }
   });
+  getnormalisedEmotion(partyId)
+};
 
+
+export function setEmotionstoZero(partyId) {
+  var ref = database.ref('/rooms/'+partyId+"/emotion");
+
+  ref.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      ref.update({[childSnapshot.key]:0.0});
+    });
+  });
   getnormalisedEmotion(partyId)
 };
