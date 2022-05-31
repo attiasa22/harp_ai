@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import MicRecorder from 'mic-recorder-to-mp3';
+import axios from 'axios';
+import newError from 'react';
 import speech_to_text_key from '../config.js';
 import nlu_key from '../config.js';
 
@@ -80,97 +82,27 @@ export default class Audio extends Component {
   }
 
   stop() {
-     /*
-     * Once the recoding starts the stop button is activated
-     * Click stop once recording as finished
-     * An MP3 is generated for the user to download the audio
-     */
-     const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
-     const { IamAuthenticator } = require('ibm-watson/auth');
-     
-
     Mp3Recorder
       .stop()
       .getMp3()
-      .then(([buffer, blob]) => {
-        const blobURL = URL.createObjectURL(blob)
+      .then(async ([buffer, blob]) => {
+        const blobURL = URL.createObjectURL(blob);
         this.setState({ blobURL, isRecording: false });
         this.setState({ isRecordingStp: true });
-
-        console.log(buffer, blob, blobURL);
-        const tunnel = require('tunnel');
-        const httpsAgent = tunnel.httpsOverHttp({
-          proxy: {
-            host: 'http://localhost:3000/',
-            port: 3000,
-          },
+        const file = new File(buffer, 'recording.mp3', {
+          type: blob.type,
+          lastModified: Date.now()
         });
-          const speechToText = new SpeechToTextV1({
-            authenticator: new IamAuthenticator({ apikey: 'o0t2ek7SVUxj3V2gRYWlcWqbAWAOlfkBEBt6fobws45a' }),  
-            serviceUrl: 'https://api.us-south.speech-to-text.watson.cloud.ibm.com',
-           // disableSslVerification: true,
-  
-            httpsAgent, // not necessary if using Basic or BearerToken authentication
-             proxy: false,
-             headers: {
-              'Access-Control-Allow-Origin': 'http://localhost:3000'
-             },
-          });
-          const file = new File(buffer, './recording.mp3', {
-            type: blob.type,
-            lastModified: Date.now()
-          });
-          const params = {
-            // From file
-            audio: new Audio('./recording.mp3'),
-            contentType: 'audio/mp3;'
-            
-          };
-          console.log("test");
-          speechToText.recognize(params)
-            .then(response => {
-              console.log(JSON.stringify(response.result, null, 2));
-              this.setState({ text: JSON.stringify(response.result, null, 2) });
-            })
-            .catch(err => {
-              console.log(err);
-            });
+        /*
+        let data = new FormData();
+        data.append('wavfile', myWav, 'recording.wav');
+        */
 
-
-            const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-            
-            const nlu = new NaturalLanguageUnderstandingV1({
-              authenticator: new IamAuthenticator({ apikey: 'duALIFSm76eWlghDLNXsGWYifaJQGxMRnf' }),
-              version: '2018-04-05',
-              serviceUrl: 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com',
-              httpsAgent, // not necessary if using Basic or BearerToken authentication
-              proxy: false,
-              headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
-              },
-            });
-            
-            nlu.analyze(
-              {
-                text: this.state.text, // Buffer or String
-                features: {
-                    emotion: {},
-                }
-              })
-              .then(response => {
-                console.log(JSON.stringify(response.result, null, 2));
-                this.setState({ sentiment: JSON.stringify(response.result, null, 2) });
-
-              })
-              .catch(err => {
-                console.log('error: ', err);
-              });
-
-    
+        let formData = new FormData();
+        formData.append("audio", file);
+        const response = await axios.post(`http://localhost:1880/test`, formData);
+        console.log(response);
       }).catch((e) => console.log(e));
-
-      
-      
   };
 
   reset() {

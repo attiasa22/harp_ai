@@ -10,6 +10,7 @@
     "firebase": "^9.8.1",
     "ibm-watson": "^7.0.0",
     "mic-recorder-to-mp3": "^2.2.2",
+    "mp3-to-wav": "^0.1.11",
     "npm": "^8.11.0",
     "path-browserify": "^1.0.1",
     "react": "^18.1.0",
