@@ -74,10 +74,18 @@ const PartyAdmin = (props) => {
         console.log(overallEmotions)
         const highest = Object.keys(overallEmotions).reduce(function(a, b){ return overallEmotions[a] > overallEmotions[b] ? a : b });
         console.log(highest);
-
-        let formData = new FormData();
-        formData.append("emotion", highest);
-        const response = await axios.post(`http://localhost:1880/emotions`, formData);
+        
+        if (highest === "sadness") {
+            await axios.get(`http://localhost:1880/sadness`);
+        } else if (highest === "anger") {
+            await axios.get(`http://localhost:1880/anger`);
+        } else if (highest === "joy") {
+            await axios.get(`http://localhost:1880/joy`);
+        } else if (highest === "fear") {
+            await axios.get(`http://localhost:1880/fear`);
+        } else if (highest === "disgust") {
+            await axios.get(`http://localhost:1880/disgust`);
+        }
     }
 
     return (
