@@ -24,7 +24,7 @@ const Home = () => {
     return (
         <div className="home-page">
             <h1 id="main-title">Welcome to HarpAI!</h1>
-            <h2 id="sub-main-title">The Playlist Generator for Parties</h2>
+            <h4 id="sub-main-title">The Playlist Generator for Parties</h4>
             <div className="homepage-buttons">
                 <button type="button" className="homepage-button" onClick={makeRoom}>Create a New Party!</button>
                 <NavLink to="/joinParty" className="homepage-button">Join a Party!</NavLink>

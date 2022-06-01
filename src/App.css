@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: linear-gradient(90deg, red,blue ) ;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -55,24 +55,28 @@
 .homepage-button {
   text-decoration: none;
   padding: 10px;
-  background-color: purple;
+  background: linear-gradient(90deg, rgba(64,147,237,1) 0%, rgba(248,97,156,1) 100%);;
   color: white;
-  border-radius: 5px;
+  border-radius: 50px;
+  border-width: 0px;
   margin-top: 10px;
   font-size: 4vw;
 }
 
 .homepage-button:hover {
-  background-color: pink;
+  background: rgba(248,97,156,1);
 }
 
 #main-title {
   font-size: 8vw;
   margin-top: 100px;
+  margin-bottom: 0px;
 }
 
 #sub-main-title {
-  font-size: 5vw;
+  font-size: 3vw;
+  margin-top: 10px;
+  margin-bottom: 100px;
 }
 
 .nav {
@@ -80,7 +84,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: purple;
+  background: linear-gradient(90deg, rgba(64,147,237,1) 0%, rgba(248,97,156,1) 100%);
 }
 
 .nav-title {
@@ -91,6 +95,7 @@
 
 .home-link {
   text-decoration: none;
+
 }
 
 .emotion-button{
@@ -139,13 +144,14 @@
 }
 
 .join-btn {
-  background-color: purple;
+  
   color: white;
   border-radius: 5px;
   font-size: 16px;
   border: none;
   height: 40px;
   width: 100px;
+  background: linear-gradient(90deg, rgba(64,147,237,1) 0%, rgba(248,97,156,1) 100%);
 }
 
 .emotion-button{
@@ -157,10 +163,13 @@
   height: 80px;
   width: 80px;
   border: none;
+  margin-top: 5px;
+  margin-inline: 5px;
 }
 
 .emotion-button:hover, .emotion-button:focus {
-  border: 5px solid rgba(128, 0, 128, 0.391);
+  border: 5px solid rgba(255, 255, 255, 0.391);
+  
 }
 
 .sad-button{
@@ -177,4 +186,12 @@
 }
 .joy-button{
   background-image: url(images/happy.png);
+} 
+
+.end-button{
+  margin-top: 50px;
+} 
+
+.mic-margin{
+  margin-top: 100px;
 } 

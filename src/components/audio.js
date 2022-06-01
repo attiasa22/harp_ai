@@ -118,8 +118,8 @@ export default class Audio extends Component {
 
     //display view of audio widget and control buttons
     return(
-      <div className="mic-stuff">
-        <button className="btn btn-light" onClick={this.start} disabled={this.state.isRecording}>Record</button>
+      <div className="mic-stuff mic-margin">
+        <button class="btn btn-light" onClick={this.start} disabled={this.state.isRecording}>Record</button>
         <button className="btn btn-danger" onClick={this.stop} disabled={!this.state.isRecording}>Stop</button>
         <button className="btn btn-warning" onClick={this.reset} disabled={!this.state.isRecordingStp}>Reset</button>
         <audio src={this.state.blobURL} controls="controls" />
