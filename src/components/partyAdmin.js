@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import * as backend from '../services/datastore';
 import Audio from './audio';
 
@@ -25,19 +26,58 @@ const PartyAdmin = (props) => {
     }
 
     const createPlaylist = async () => {
+        const overallEmotions = {};
         const userEmotions = await backend.getnormalisedEmotion(id);
 
         console.log(recordingEmotions);
         console.log(userEmotions);
 
+        const userEmotionsExist = Object.keys(userEmotions);
+
         for (const [key, value] of Object.entries(recordingEmotions)) {
-            if (userEmotions.includes(value)) {
-                recordingEmotions[key] += userEmotions[value];
+            if (key === "sadness") {
+                if (userEmotionsExist.includes("sad")) {
+                    overallEmotions[key] = value + (.2 * userEmotions["sad"]);
+                } else {
+                    overallEmotions[key] = value;
+                }
+            }
+            if (key === "anger") {
+                if (userEmotionsExist.includes("angry")) {
+                    overallEmotions[key] = value + (.2 * userEmotions["angry"]);
+                } else {
+                    overallEmotions[key] = value;
+                }
+            }
+            if (key === "joy") {
+                if (userEmotionsExist.includes("joy")) {
+                    overallEmotions[key] = value + (.2 * userEmotions["joy"]);
+                } else {
+                    overallEmotions[key] = value;
+                }
+            }
+            if (key === "fear") {
+                if (userEmotionsExist.includes("confused")) {
+                    overallEmotions[key] = value + (.2 * userEmotions["confused"]);
+                } else {
+                    overallEmotions[key] = value;
+                }
+            }
+            if (key === "disgust") {
+                if (userEmotionsExist.includes("disgusted")) {
+                    overallEmotions[key] = value + (.2 * userEmotions["disgusted"]);
+                } else {
+                    overallEmotions[key] = value;
+                }
             }
         }
-
-        const highest = Math.max(recordingEmotions);
+        console.log(overallEmotions)
+        const highest = Object.keys(overallEmotions).reduce(function(a, b){ return overallEmotions[a] > overallEmotions[b] ? a : b });
         console.log(highest);
+
+        let formData = new FormData();
+        formData.append("emotion", highest);
+        const response = await axios.post(`http://localhost:1880/emotions`, formData);
     }
 
     return (
