@@ -60,7 +60,7 @@
   border-radius: 50px;
   border-width: 0px;
   margin-top: 10px;
-  font-size: 4vw;
+  font-size: 2vw;
 }
 
 .homepage-button:hover {
@@ -189,9 +189,9 @@
 } 
 
 .end-button{
-  margin-top: 50px;
+  margin-top: 20px;
 } 
 
 .mic-margin{
-  margin-top: 100px;
+  margin-top: 50px;
 } 

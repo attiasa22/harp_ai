@@ -125,7 +125,10 @@ export default class Audio extends Component {
         <button class="btn btn-light" onClick={this.start} disabled={this.state.isRecording}>Record</button>
         <button className="btn btn-danger" onClick={this.stop} disabled={!this.state.isRecording}>Stop</button>
         <button className="btn btn-warning" onClick={this.reset} disabled={!this.state.isRecordingStp}>Reset</button>
+        
+        <div>
         <audio src={this.state.blobURL} controls="controls" />
+      </div>
       </div>
     );
   }

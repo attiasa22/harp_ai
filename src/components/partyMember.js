@@ -25,15 +25,16 @@ const PartyMember = () => {
     return (
         <div className="home-page">
             <h1 id="main-title">In Party: {id}</h1>
-            <button type="button">Vote</button>
-            <button type="button" onClick={() => leaveParty(id)}>Leave Party</button>
+            <h2 class="end-button">How should the music feel?</h2>
             <div className='.button-align'>               
                 <input onClick={() => updateEmotion(id, "joy")} type="submit" className=" emotion-button joy-button" value="" />
                 <input onClick={() => updateEmotion(id, "sad")} type="submit" className="sad-button emotion-button" value="" />
                 <input onClick={() => updateEmotion(id, "angry")} type="submit" className="angry-button emotion-button" value="" />
                 <input onClick={() => updateEmotion(id, "disgusted")} type="submit" className="disgusted-button emotion-button" value="" />
                 <input onClick={() => updateEmotion(id, "confused")} type="submit" className="confused-button emotion-button" value="" />
+               
             </div>
+            <button class="homepage-button" onClick={() => leaveParty(id)}>Leave Party</button>
         </div>
     );
 }
