@@ -1,7 +1,7 @@
 # harp_ai
 # COSC 89.11 Watson Project
 
-## Ariel Attias, Pat Howard, James Verschleiser
+## Ariel Attias, Patrick Howard, James Verschleiser
 
 ### Frontend: React.js
 ### Backend: Firebase
